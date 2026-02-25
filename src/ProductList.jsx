@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
+import addItem from './CartSlice.jsx';
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
+    const [addedToCart, setAddedToCart] = useState({});
+    const handleAddToCart = (plant) => {
+        dispatch(addItem(plant));
+      
+        setAddedToCart((prevState) => ({
+          ...prevState, 
+          [plant.name]: true,
+        }));
+      };
 
     const plantsArray = [
         {
@@ -285,7 +295,7 @@ function ProductList({ onHomeClick }) {
                             {plantType.plants.map(plant =>
                                 <div>
                                     <h3>{plant.name}</h3>
-                                    <img src={plant.image} alt={plant.name} />
+                                    <img className="product-image" src={plant.image} alt={plant.name} />
                                     <p>{plant.description}</p>
                                     <div>{plant.cost}</div>
                                     <button onClick={() => handleAddToCart(plant)}>Add to Cart</button>
@@ -302,7 +312,10 @@ function ProductList({ onHomeClick }) {
                 <CartItem onContinueShopping={handleContinueShopping} />
             )}
         </div>
+        
     );
+    
 }
+
 
 export default ProductList;
